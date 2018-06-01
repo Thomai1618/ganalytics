@@ -255,7 +255,7 @@ class Ganalytics extends Module
 			$user_id = (int)$this->context->customer->id;
 		}
 
-		return '
+		/*return '
 			<script type="text/javascript">
 				(window.gaDevIds=window.gaDevIds||[]).push(\'d6YPbH\');
 				(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
@@ -266,7 +266,7 @@ class Ganalytics extends Module
 				ga(\'require\', \'ec\');'
 				.(($user_id && !$back_office) ? 'ga(\'set\', \'userId\', \''.$user_id.'\');': '')
 				.($back_office ? 'ga(\'set\', \'nonInteraction\', true);' : '')
-			.'</script>';
+			.'</script>';?/*
 	}
 
 	public function hookHeader()
@@ -282,6 +282,14 @@ class Ganalytics extends Module
 	/**
 	 * Return a detailed transaction for Google Analytics
 	 */
+		return '<script>
+          (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');
+          ga(\'create\', \''.Tools::safeOutput(Configuration::get('GA_ACCOUNT_ID')).'\', \'auto\');
+          ga(\'send\', \'pageview\');'
+        .'</script>';
 	public function wrapOrder($id_order)
 	{
 		$order = new Order((int)$id_order);
